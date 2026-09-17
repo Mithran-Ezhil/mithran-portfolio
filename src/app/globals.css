@@ -408,10 +408,324 @@ section:not(#hero) {
   transition: background 0.2s ease;
 }
 
+/* ── Floating pill animation ──────────────────────────────────────────── */
+@keyframes floatPill {
+  0%, 100% { transform: translateY(0px) rotate(0deg);   opacity: 0.7; }
+  33%       { transform: translateY(-10px) rotate(1deg); opacity: 1;   }
+  66%       { transform: translateY(-4px) rotate(-1deg); opacity: 0.8; }
+}
+
+/* ── Loading screen shimmer ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* ── Bento card number accent ─────────────────────────────────────────── */
+.bento-num {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-family: var(--font-geist-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.1);
+  letter-spacing: 0.1em;
+}
+
+/* ── Section number style ─────────────────────────────────────────────── */
+.section-num {
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+/* ── Horizontal scroll track ──────────────────────────────────────────── */
+.h-scroll-section {
+  position: relative;
+  overflow: hidden;
+}
+.h-scroll-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.h-scroll-track {
+  display: flex;
+  will-change: transform;
+  gap: 2vw;
+  padding: 0 6vw;
+}
+.h-scroll-card {
+  flex-shrink: 0;
+  width: 80vw;
+  max-width: 880px;
+  height: 78vh;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+@media (max-width: 768px) {
+  .h-scroll-card { width: 90vw; height: 72vh; }
+}
+
+/* ── Card shimmer sweep on hover ──────────────────────────────────────── */
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.card-shimmer:hover::after {
+  opacity: 1;
+  animation: shimmer 1.2s linear;
+}
+
+/* ── Text gradient animate ────────────────────────────────────────────── */
+.text-flow {
+  background: linear-gradient(90deg, #00d4ff, #87FB89, #00ffcc, #00d4ff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 5s linear infinite;
+}
+@keyframes gradientFlow {
+  0%   { background-position: 0% center;   }
+  100% { background-position: 300% center; }
+}
+
 /* ── Hero responsive ─────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero-grid {
     grid-template-columns: 1fr !important;
     padding: 100px 24px 140px !important;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   AURORA BACKGROUND — drifting colour orbs behind the whole page
+   ══════════════════════════════════════════════════════════════════════ */
+.aurora-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.aurora-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+.aurora-orb-1 {
+  width: 70vw; height: 70vw;
+  background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, rgba(0,100,180,0.04) 50%, transparent 70%);
+  top: -20%; left: -20%;
+  animation: aurora-drift-1 28s ease-in-out infinite alternate;
+}
+.aurora-orb-2 {
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(135,251,137,0.06) 0%, rgba(0,200,120,0.03) 50%, transparent 70%);
+  bottom: 10%; right: -15%;
+  animation: aurora-drift-2 34s ease-in-out infinite alternate;
+}
+.aurora-orb-3 {
+  width: 50vw; height: 50vw;
+  background: radial-gradient(circle, rgba(150,100,255,0.05) 0%, rgba(80,50,200,0.03) 50%, transparent 70%);
+  top: 40%; left: 30%;
+  animation: aurora-drift-3 22s ease-in-out infinite alternate;
+}
+.aurora-orb-4 {
+  width: 40vw; height: 40vw;
+  background: radial-gradient(circle, rgba(0,255,200,0.04) 0%, transparent 65%);
+  top: 70%; left: -10%;
+  animation: aurora-drift-4 38s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-1 {
+  0%   { transform: translate(0,   0);   }
+  50%  { transform: translate(15vw, 12vh); }
+  100% { transform: translate(8vw,  25vh); }
+}
+@keyframes aurora-drift-2 {
+  0%   { transform: translate(0,   0);    }
+  50%  { transform: translate(-12vw, -15vh); }
+  100% { transform: translate(-6vw, -8vh);  }
+}
+@keyframes aurora-drift-3 {
+  0%   { transform: translate(0, 0);     }
+  50%  { transform: translate(-10vw, 18vh); }
+  100% { transform: translate(10vw, -10vh); }
+}
+@keyframes aurora-drift-4 {
+  0%   { transform: translate(0, 0);    }
+  50%  { transform: translate(20vw, -8vh); }
+  100% { transform: translate(10vw, 12vh); }
+}
+
+/* ── Subtle dot-grid overlay on the whole page ────────────────────────── */
+.dot-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(0,212,255,0.045) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 80%);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION GLOW THEMES — each section gets a coloured ambient top-glow
+   ══════════════════════════════════════════════════════════════════════ */
+/* ── Section ambient glows ─────────────────────────────────────────────────
+   These used to be four near-identical rules whose gradient was centred at
+   `50% 0%` — the pseudo-element's own top edge. A radial gradient is brightest
+   at its centre, so the glow hit full strength exactly where the box ended and
+   was clipped dead: a hard horizontal seam, bounded left and right by the 80%
+   width, which read as a stitched-on rectangle.
+
+   Now the ellipse is centred in the box and reaches `transparent` well before
+   any edge, so there is nothing left to clip. The box stays at 100% width on
+   purpose: overflowing it (e.g. 120%) bleeds past the viewport, because
+   `overflow-x: hidden` on <body> propagates to the viewport instead of
+   clipping body's own children, which leaves document.scrollWidth overflowing.
+   Keeping the radii small enough to fade out inside 100% avoids that. */
+.section-glow-green,
+.section-glow-cyan,
+.section-glow-violet,
+.section-glow-blue {
+  position: relative;
+}
+
+.section-glow-green::before,
+.section-glow-cyan::before,
+.section-glow-violet::before,
+.section-glow-blue::before {
+  content: '';
+  position: absolute;
+  top: -160px; left: 50%;
+  transform: translateX(-50%);
+  width: 100%; height: 560px;
+  background: radial-gradient(
+    ellipse 44% 50% at 50% 50%,
+    rgba(var(--section-glow-rgb), 0.07) 0%,
+    rgba(var(--section-glow-rgb), 0.028) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-glow-green  { --section-glow-rgb: 135, 251, 137; }
+.section-glow-cyan   { --section-glow-rgb: 0, 212, 255; }
+.section-glow-violet { --section-glow-rgb: 167, 139, 250; }
+.section-glow-blue   { --section-glow-rgb: 56, 189, 248; }
+
+/* ── Scroll-reveal fade-up (used in page.tsx wrappers) ────────────────── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(48px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section-enter {
+  animation: revealUp 0.9s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* ── Card hover lift + glow ───────────────────────────────────────────── */
+.hover-lift {
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+              box-shadow  0.35s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.08);
+}
+
+/* ── Gradient border glow on cards ───────────────────────────────────── */
+.card-glow-cyan:hover {
+  box-shadow: 0 0 0 1px rgba(0,212,255,0.25),
+              0 20px 60px rgba(0,212,255,0.08),
+              0 4px 24px rgba(0,0,0,0.6);
+}
+.card-glow-green:hover {
+  box-shadow: 0 0 0 1px rgba(135,251,137,0.22),
+              0 20px 60px rgba(135,251,137,0.07),
+              0 4px 24px rgba(0,0,0,0.6);
+}
+
+/* ── Terminal cursor blink ────────────────────────────────────────────── */
+@keyframes termBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   HEAVY-BUDGET POLISH — scroll cue, reveals, magnetic, ambient grade
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero scroll cue (animated "mouse" track) ─────────────────────────── */
+.scroll-cue-track {
+  width: 22px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255,255,255,0.22);
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+.scroll-cue-dot {
+  width: 3px;
+  height: 7px;
+  border-radius: 2px;
+  background: #00d4ff;
+  box-shadow: 0 0 8px rgba(0,212,255,0.8);
+  animation: scrollCueDrop 1.8s cubic-bezier(0.76,0,0.24,1) infinite;
+}
+@keyframes scrollCueDrop {
+  0%   { transform: translateY(0);    opacity: 0;   }
+  30%  { opacity: 1; }
+  70%  { transform: translateY(14px); opacity: 1;   }
+  100% { transform: translateY(14px); opacity: 0;   }
+}
+
+/* ── Reveal base — keeps tagged elements stable until GSAP runs ───────── */
+[data-reveal] { will-change: transform, opacity, filter; }
+
+/* ── Magnetic base — smooth return when cursor leaves ─────────────────── */
+[data-magnetic] { will-change: transform; }
+
+/* ── Premium scrollbar refinement ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 0px; }
+
+/* ── Selection colour ─────────────────────────────────────────────────── */
+::selection { background: rgba(0,212,255,0.25); color: #fff; }
+
+/* ── Section heading gradient (editorial, unified) ────────────────────── */
+.editorial-gradient {
+  background: linear-gradient(100deg, #00d4ff 0%, #87FB89 55%, #00ffcc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Navbar scroll-progress hairline ──────────────────────────────────── */
+.nav-progress {
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, #00d4ff, #87FB89);
+  box-shadow: 0 0 10px rgba(0,212,255,0.6);
+  border-radius: 2px;
+  transform-origin: left;
 }

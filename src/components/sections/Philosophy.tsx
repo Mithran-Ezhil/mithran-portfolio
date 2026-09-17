@@ -1,9 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-
-// Replace with your actual CloudFront video URL
-const PHILOSOPHY_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_4a2205b7-b061-490a-852b-92d9e9955ce9.mp4'
+import PipelineDiagram from '@/components/ui/PipelineDiagram'
 
 const PILLARS = [
   {
@@ -25,20 +23,8 @@ const PILLARS = [
 
 export default function Philosophy() {
   const sectionRef = useRef<HTMLElement>(null)
-  const videoRef   = useRef<HTMLVideoElement>(null)
   const leftRef    = useRef<HTMLDivElement>(null)
   const rightRef   = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { video.play().catch(() => {}) } else { video.pause() } },
-      { threshold: 0.2 }
-    )
-    obs.observe(video)
-    return () => obs.disconnect()
-  }, [])
 
   useEffect(() => {
     import('@/lib/gsap').then(({ gsap }) => {
@@ -120,29 +106,12 @@ export default function Philosophy() {
           </div>
         </div>
 
-        {/* Right — video */}
+        {/* Right — reference pipeline.
+            Was a CloudFront <video> that now 403s, leaving an empty black 4/5
+            box. Replaced with a self-contained diagram so there is no external
+            asset to expire. */}
         <div ref={rightRef} className="relative" style={{ opacity: 0 }}>
-          <div
-            className="relative rounded-3xl overflow-hidden video-glow"
-            style={{ aspectRatio: '4/5' }}
-          >
-            <video
-              ref={videoRef}
-              src={PHILOSOPHY_VIDEO}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="w-full h-full object-cover"
-            />
-            {/* Green tint overlay */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: 'linear-gradient(180deg, transparent 40%, rgba(135,251,137,0.06) 100%)',
-              }}
-            />
-          </div>
+          <PipelineDiagram />
 
           {/* Floating stat pill */}
           <div

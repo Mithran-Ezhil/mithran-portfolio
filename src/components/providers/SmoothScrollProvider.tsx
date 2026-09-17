@@ -25,6 +25,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
         wheelMultiplier: 0.8,
       })
       lenisRef.current = lenis
+      ;(window as unknown as { lenis?: Lenis }).lenis = lenis
 
       lenis.on('scroll', ({ scroll, limit }: { scroll: number; limit: number }) => {
         const now = performance.now()

@@ -1,34 +1,12 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-
-// Replace with your actual CloudFront video URL
-const FEATURED_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260402_054547_4a2205b7-b061-490a-852b-92d9e9955ce9.mp4'
+import StreamMonitor from '@/components/ui/StreamMonitor'
 
 export default function FeaturedVideo() {
   const sectionRef = useRef<HTMLElement>(null)
-  const videoRef   = useRef<HTMLVideoElement>(null)
   const cardRef    = useRef<HTMLDivElement>(null)
   const textRef    = useRef<HTMLDivElement>(null)
-
-  /* ── Video lazy-load: play when in view ─────────────────────────── */
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {})
-        } else {
-          video.pause()
-        }
-      },
-      { threshold: 0.2 }
-    )
-    obs.observe(video)
-    return () => obs.disconnect()
-  }, [])
 
   /* ── GSAP scroll reveal ──────────────────────────────────────────── */
   useEffect(() => {
@@ -73,24 +51,12 @@ export default function FeaturedVideo() {
           className="relative rounded-3xl overflow-hidden video-glow"
           style={{ opacity: 0, aspectRatio: '16/9' }}
         >
-          <video
-            ref={videoRef}
-            src={FEATURED_VIDEO}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-cover"
-          />
-          {/* Overlay gradient */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 60%)',
-            }}
-          />
+          {/* Was a CloudFront <video> that now 403s, leaving an empty box
+              behind the "Live Preview" badge. Canvas-drawn monitor instead, so
+              there is no external asset to expire. */}
+          <StreamMonitor />
           {/* Corner label */}
-          <div className="absolute top-5 left-5">
+          <div className="absolute top-5 left-5" style={{ zIndex: 2 }}>
             <span
               className="text-[10px] font-mono tracking-[0.4em] uppercase px-3 py-1.5 rounded-full"
               style={{

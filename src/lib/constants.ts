@@ -11,6 +11,7 @@ export const SECTION_IDS = {
   about:      'about',
   experience: 'experience',
   projects:   'projects',
+  research:   'research',
   contact:    'contact',
 } as const
 

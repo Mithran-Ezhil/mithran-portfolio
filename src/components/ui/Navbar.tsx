@@ -8,11 +8,12 @@ const NAV_ITEMS = [
   { label: 'About',      href: `#${SECTION_IDS.about}` },
   { label: 'Experience', href: `#${SECTION_IDS.experience}` },
   { label: 'Projects',   href: `#${SECTION_IDS.projects}` },
+  { label: 'Research',   href: `#${SECTION_IDS.research}` },
   { label: 'Contact',    href: `#${SECTION_IDS.contact}` },
 ]
 
 export default function Navbar() {
-  const { scrollY } = useScroll()
+  const { scrollY, scrollYProgress } = useScroll()
   const [active, setActive] = useState<string>(SECTION_IDS.hero)
   // Compress pill on scroll
   const pillPaddingY = useTransform(scrollY, [0, 80], [14, 10])
@@ -89,15 +90,21 @@ export default function Navbar() {
           {/* CTA — right */}
           <a
             href={`#${SECTION_IDS.contact}`}
-            className="shrink-0 text-[13px] font-semibold px-5 py-2 rounded-full transition-all duration-300 hover:scale-105 hover:brightness-110"
+            data-hover
+            data-magnetic="0.3"
+            className="shrink-0 text-[13px] font-semibold px-5 py-2 rounded-full hover:brightness-110"
             style={{
               background: '#87FB89',
               color: '#000',
               boxShadow: '0 0 20px rgba(135,251,137,0.25)',
+              transition: 'transform 0.25s cubic-bezier(0.22,1,0.36,1), filter 0.3s',
             }}
           >
             Hire Me
           </a>
+
+          {/* Scroll-progress hairline */}
+          <motion.div className="nav-progress" style={{ scaleX: scrollYProgress, width: '100%' }} />
         </motion.nav>
       </motion.div>
     </header>
