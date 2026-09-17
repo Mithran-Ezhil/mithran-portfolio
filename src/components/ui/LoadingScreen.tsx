@@ -25,10 +25,9 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
   useEffect(() => {
     let n = 0
-    let phraseTimer: ReturnType<typeof setInterval>
 
     // Cycle loading phrases
-    phraseTimer = setInterval(() => setPhrase(p => (p + 1) % PHRASES.length), 700)
+    const phraseTimer = setInterval(() => setPhrase(p => (p + 1) % PHRASES.length), 700)
 
     // Gate the last few percent on the hero video, so the curtain never lifts
     // onto an empty hero. Resolves early if the video is already playable.

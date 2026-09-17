@@ -438,7 +438,9 @@ export default function Projects() {
 
   useEffect(() => {
     if (outerHeight === 0) return
-    let ctx: any
+    // Structural type instead of `any`: gsap is dynamically imported, so its
+    // Context type isn't in scope here and revert() is all we need.
+    let ctx: { revert: () => void } | undefined
 
     import('@/lib/gsap').then(({ gsap }) => {
       ctx = gsap.context(() => {
